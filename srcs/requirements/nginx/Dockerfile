@@ -8,7 +8,7 @@ RUN mkdir -p /etc/nginx/ssl
 
 RUN apt install openssl -y
 
-RUN openssl req -x509 -nodes -out /etc/nginx/ssl/mbachar.crt -keyout /etc/nginx/ssl/mbachar.key -subj "/C=MA/ST=KH/L=Khouribga/O=1337/OU=1337/CN=mbachar.42.fr/UID=mbachar"
+RUN openssl req -x509 -nodes -out /etc/nginx/ssl/mbachar.crt -keyout /etc/nginx/ssl/mbachar.key -subj "/C=MA/ST=KH/L=Khouribga/O=42/OU=42/CN=mbachar.42.fr/UID=mbachar"
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
