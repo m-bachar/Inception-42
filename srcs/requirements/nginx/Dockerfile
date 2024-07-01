@@ -14,4 +14,6 @@ COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 COPY /tools/index.html /var/www/html/index.html
 
+EXPOSE 443
+
 CMD [ "nginx", "-g", "daemon off;" ]
