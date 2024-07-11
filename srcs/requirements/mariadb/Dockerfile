@@ -1,33 +1,19 @@
-# FROM debian:buster
+# Use Debian Buster as the base image
+FROM debian:bullseye
 
-# RUN apt update -y && apt upgrade -y
+# Update and upgrade existing packages
+RUN apt update -y && apt upgrade -y
 
-# RUN apt install mariadb-server mariadb-client -y
+# Install MariaDB server
+RUN apt install mariadb-server mariadb-client -y
 
-# COPY ./conf/50-server.cnf ./etc/mysql/mariadb.conf.d/50-server.cnf
+RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# COPY ./tools/script.sh .
+# Copy script.sh from host to container
+COPY ./tools/script.sh .
 
-# RUN chmod +x script.sh
+# Make script.sh executable
+RUN chmod +x script.sh
 
-# EXPOSE 3306
-
-# CMD [ "./script.sh" ]
-
-# base image
-FROM debian:buster
-
-# install mariadb server
-RUN apt update && apt -y install mariadb-server
-
-# copy the script.sh into container
-COPY ./tools/script.sh /tmp/script.sh
-
-# change the permission to the script.sh
-RUN chmod +x /tmp/script.sh
-
-# run the script.sh
-ENTRYPOINT [ "/tmp/script.sh" ]
-
-# running mysqld daemon
-CMD [ "mysqld" ]
+# Specify the command to run when the container starts
+CMD ["./script.sh"]

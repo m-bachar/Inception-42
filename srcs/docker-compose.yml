@@ -1,42 +1,58 @@
-version: '3.5'
-
 services:
-  # nginx:
-  #   build: ./requirements/nginx
-  #   container_name: nginx
-  #   image: nginx:inception
-  #   ports:
-  #     - '443:443'
-  #   env_file:
-  #     - .env
-  #   restart: always
-  #   networks:
-  #     - nat
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    image: nginx:inception
+    ports:
+      - '443:443'
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - netow
+    depends_on:
+      - wordpress
+    volumes:
+      - data:/var/www/html/
 
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
     image: mariadb:inception
-    ports:
-      - '3306:3306'
     env_file:
       - .env
     restart: always
     networks:
-      - nat
+      - netow
+    volumes:
+      - data_db:/var/lib/mysql/
 
-  # wordpress:
-  #   build: ./requirements/wordpress
-  #   container_name: wordpress
-  #   image: wordpress:inception
-  #   ports:
-  #     - '9000:9000'
-  #   env_file:
-  #     - .env
-  #   restart: always
-  #   networks:
-  #     - nat
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    image: wordpress:inception
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - netow
+    depends_on:
+      - mariadb
+    volumes:
+      - data:/var/www/html/
 
 networks:
-  nat:
+  netow:
     driver: bridge
+
+volumes:
+  data:
+    driver_opts:
+      device: /Users/mbachar/Data/data_wp
+      type: none
+      o: bind
+  data_db:
+    driver_opts:
+      device: /Users/mbachar/Data/data_db
+      type: none
+      o: bind
