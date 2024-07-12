@@ -1,19 +1,20 @@
-# Use Debian Buster as the base image
-FROM debian:bullseye
+# Use the Debian oldstable base image
+FROM debian:oldstable
 
-# Update and upgrade existing packages
+# Update and upgrade packages in the base image
 RUN apt update -y && apt upgrade -y
 
-# Install MariaDB server
+# Install MariaDB server and client
 RUN apt install mariadb-server mariadb-client -y
 
-RUN sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
+# Copy custom MariaDB server configuration file to the container
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-# Copy script.sh from host to container
+# Copy a script named script.sh to the root of the container filesystem
 COPY ./tools/script.sh .
 
 # Make script.sh executable
 RUN chmod +x script.sh
 
-# Specify the command to run when the container starts
+# Define the command to run when the container starts
 CMD ["./script.sh"]
