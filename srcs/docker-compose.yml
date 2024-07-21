@@ -48,11 +48,11 @@ networks:
 volumes:
   data:
     driver_opts:
-      device: /Users/mbachar/Data/data_wp
+      device: /home/mbachar/data/data_wp
       type: none
       o: bind
   data_db:
     driver_opts:
-      device: /Users/mbachar/Data/data_db
+      device: /home/mbachar/data/data_db
       type: none
       o: bind
